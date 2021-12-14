@@ -9,18 +9,29 @@ const Home = () => {
     const [error, setError] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
     const [editData, setEditData] = useState();
+    const [editData1, setEditData1] = useState();
 
     const navigate = useHistory();
     const location = useLocation();
 
-    // if(location) {
-    //     setEditData(JSON.parse(localStorage.getItem('user')));
-    //     console.log(editData)
-    //     if(editData) {
-    //         var rahul = editData[location.state.input]
-    //         console.log(rahul)
-    //     }
-    // }
+    
+    useEffect(()=>{
+        if(location.state != undefined) {
+            setEditData(location.state.input)
+            console.log(location.state)
+            var value = JSON.parse(localStorage.getItem('user'))
+            var exactData = value[location.state.input]
+            console.log(exactData)
+            setInput({
+                first:exactData.first,
+                last: exactData.last,
+                email: exactData.email,
+                number: exactData.number,
+                address: exactData.address
+            })
+        }
+    },[])
+        
     const changeValue = (event) => {
         const { name, value } = event.target;
         setInput(values => ({...values, [name]: value}))
@@ -30,19 +41,23 @@ const Home = () => {
         event.preventDefault();
         setError(validate(input));
         setIsSubmit(true);
+        console.log(editData)
         if(Object.keys(error).length === 0 && isSubmit) {
             var value = []
             var item = localStorage.getItem('user')
-            console.log(item)
+            
             if(item) {
                 var storedData = JSON.parse(item)
                 for (let i = 0; i < storedData.length; i++) {
                   value.push(storedData[i])
                 }
             } 
+                console.log(value)
+            if(editData != undefined) {
+                value[editData] = input
+            } else {
                 value.push(input)
-            
-    
+            }
             console.log(value)
             localStorage.setItem('user',JSON.stringify(value))
     
@@ -54,14 +69,11 @@ const Home = () => {
     }
 
     useEffect(()=>{
-        console.log(error)
         if(Object.keys(error).length === 0 && isSubmit) {
-            console.log(input)
         }
     },[input])
 
     const validate = (values) => {
-        console.log(values)
         const errors = {}
         const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if(!values.first) {
@@ -74,9 +86,7 @@ const Home = () => {
         //     errors.userName = 'Username is required';
         // }
         if(!values.number) {
-            console.log(values.number)
             errors.number = 'Number is required';
-            console.log(errors.number)
         }
         if(!values.email) {
             errors.email = 'Email is required';
@@ -87,7 +97,6 @@ const Home = () => {
             errors.number = 'Address is required';
         }
         return errors
-        console.log(errors)
     }
 
     return (

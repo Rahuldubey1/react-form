@@ -44,28 +44,30 @@ const List = (props) => {
     return (
         <>
             <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                    <th>Address</th>
-                    <th>Action</th>
-                </tr>
-                    {userData?.map((item,index)=>{
-                        return (
-                            <>
-                                <tr key={index}>
-                                    <td >{item.first} {item.last}</td>
-                                    <td >{item.email}</td>
-                                    <td >{item.number}</td>
-                                    <td >{item.address}</td>
-                                    <td><i className="fa fa-trash-o edit" onClick={()=>deleteData(index)}></i>
-                                        <i className="fa fa-edit edit" onClick={()=>editValue(index)}></i>
-                                    </td>
-                                </tr>
-                            </>
-                        )
-                    })}                    
+                <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Address</th>
+                        <th>Action</th>
+                    </tr>
+                        {userData?.map((item,index)=>{
+                            return (
+                                <>
+                                    <tr key={index}>
+                                        <td >{item.first} {item.last}</td>
+                                        <td >{item.email}</td>
+                                        <td >{item.number}</td>
+                                        <td >{item.address}</td>
+                                        <td><i className="fa fa-trash-o edit" onClick={()=>deleteData(index)}></i>
+                                            <i className="fa fa-edit edit" onClick={()=>editValue(index)}></i>
+                                        </td>
+                                    </tr>
+                                </>
+                            )
+                        })}    
+                </tbody>              
             </table>
         </>
     )
